@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<LinearLayout
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<FrameLayout
+        android:layout_width="match_parent"
+        android:foreground="#56D2D4E9"
+        android:layout_height="400dp">
+
+    <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/margin_medium_2"
+            android:src="@drawable/detail_back_icon"
+            />
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/pdetail"
+            android:id="@+id/imv_detail_product"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop"
+            />
+
+</FrameLayout>
+
+<RelativeLayout
+        android:paddingLeft="@dimen/margin_medium_2"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:paddingRight="@dimen/margin_medium_2"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_regular_2x"
+            android:text="Cactus"
+            android:id="@+id/tv_detail_product_name"
+            android:textColor="#000"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$20"
+            android:layout_below="@id/tv_detail_product_name"
+            android:layout_marginTop="@dimen/margin_large"
+            android:textSize="@dimen/text_regular"
+            android:textColor="#3D66BE"
+            android:id="@+id/tv_detail_product_price"
+            />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="City Mart"
+            android:id="@+id/tv_shop_name"
+            android:textSize="@dimen/text_regular"
+            android:layout_alignParentRight="true"
+            />
+
+    <RatingBar
+            android:layout_width="130dp"
+            android:numStars="4"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/tv_shop_name"
+
+            android:scaleX="0.5"
+            android:scaleY="0.4"
+            android:layout_height="40dp"/>
+
+
+</RelativeLayout>
+
+<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#868383"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+
+        />
+
+<TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_detail_product_desc"
+        android:text="THis is a cactus"
+        android:fontFamily="casual"
+        android:layout_margin="@dimen/margin_medium_2"
+        />
+
+<Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buy Now"
+        android:layout_margin="@dimen/margin_medium_2"
+        android:textColor="#fff"
+        android:layout_gravity="bottom"
+        android:background="@drawable/detail_prodect_buy"
+        />
+
+</LinearLayout>
+</ScrollView>

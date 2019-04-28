@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Eco Me</string>
+    <string name="header_category">Category</string>
+    <string name="header_hot_item">Hot item</string>
+</resources>
