@@ -8,6 +8,8 @@ interface ILogin {
 
     fun logout()
 
+    fun isUserLogin() : Boolean
+
     interface LoginDelegate {
         fun onSuccess(loginVO: LoginVO)
         fun onFail(message: String)

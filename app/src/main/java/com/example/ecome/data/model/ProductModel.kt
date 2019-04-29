@@ -6,6 +6,13 @@ import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.ProductResponse
 
 class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
+    override fun saveFavouriteProductsId(id: Int) {
+         mEcoDatabase.getFavouriteDao().saveFavouriteProduct(id);
+    }
+
+    override fun getFavouriteProducts(): MutableList<ProductVO> {
+         return mEcoDatabase.getFavouriteDao().getFavouriteProduct()
+    }
 
     override fun getProductsById(id: Int): ProductVO {
         return mEcoDatabase!!.getProductDao()

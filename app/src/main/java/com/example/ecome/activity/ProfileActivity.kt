@@ -14,13 +14,12 @@ class ProfileActivity : BaseActivity() {
         fun newIntent(context: Context): Intent {
             var intent = Intent(context, ProfileActivity::class.java)
             return intent
-
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         setContentView(R.layout.activity_profile)
-        relative_layout.addView(ProfileViewPod(applicationContext),1)
+
     }
 }

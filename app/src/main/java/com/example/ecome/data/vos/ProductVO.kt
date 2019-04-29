@@ -5,14 +5,13 @@ import android.support.annotation.ColorInt
 import com.example.ecome.persistance.typeconveter.ImageTypeConveter
 
 @Entity(tableName = "product")
-
 data class ProductVO(
     @PrimaryKey
     @ColumnInfo
-    var product_id: Int = 0,
+    var product_id: Int =0,
 
     @ColumnInfo
-    var product_name: String = "",
+    var product_name: String ="",
 
     @Ignore
     var product_image_url: MutableList<ProductImageVO> = ArrayList(),
@@ -21,15 +20,15 @@ data class ProductVO(
     var product_desc: String = "",
 
     @ColumnInfo
-    var product_price: String = "",
+    var product_price: String ="",
 
     @ColumnInfo
-    var uploaded_time: String = "",
+    var uploaded_time: String ="",
 
     @ColumnInfo
     var availability: Boolean = false,
 
     @ColumnInfo
-    var uploaded_date: String = ""
+    var uploaded_date: String= ""
 
 )

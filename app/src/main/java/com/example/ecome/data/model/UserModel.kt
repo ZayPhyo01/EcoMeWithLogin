@@ -6,6 +6,10 @@ import com.example.ecome.network.response.LoginResponse
 import com.example.ecome.network.response.RegisterResponse
 
 class UserModel private constructor(context: Context): BaseModel(context),ILogin{
+    override fun isUserLogin(): Boolean {
+        var isLogin : Int =  mEcoDatabase.getUserLoginDao().getUserLogin()
+        return if(isLogin ==0) false else { true }
+    }
 
     companion object {
          var INSTANCE : UserModel?=null
@@ -26,7 +30,8 @@ class UserModel private constructor(context: Context): BaseModel(context),ILogin
             }
 
             override fun success(dataVo: LoginResponse) {
-              loginDelegate.onSuccess(dataVo.login_user)
+              loginDelegate.onSuccess(dataVo.login_user!!)
+                mEcoDatabase.getUserLoginDao().saveUserLogin(dataVo.login_user!!)
             }
         })
 

@@ -5,6 +5,8 @@ import com.example.ecome.data.vos.ProductVO
 interface IProduct {
 
     fun getProducts(delegate: ProductDelegate) : MutableList<ProductVO>
+    fun getFavouriteProducts() : MutableList<ProductVO>
+    fun saveFavouriteProductsId(id : Int)
 
     fun getProductsById(id : Int) : ProductVO
 

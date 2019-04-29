@@ -16,14 +16,14 @@ import android.arch.persistence.room.*
 data class ProductImageVO(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    var pkForImae :Int,
+    val pkForImae :Int,
 
     @ColumnInfo
-    var id: Int = 0,
+    val id: Int ,
 
     @ColumnInfo
-    var image_url: String = "",
+    var image_url: String ,
 
     @ColumnInfo(name = "product_id")
-    var product_id: Int = 0
+    var product_id: Int
 )

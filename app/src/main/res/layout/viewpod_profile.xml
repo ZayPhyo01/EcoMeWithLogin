@@ -5,31 +5,7 @@
                                                android:layout_height="match_parent">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:id="@+id/cimv_profile"
-            android:src="@drawable/ic_home_black_24dp"
-            />
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cimv_profile"
-            android:text="Zay Phyo"
-            android:layout_marginTop="@dimen/margin_medium_2"
-            android:layout_marginBottom="@dimen/margin_medium"
-            android:id="@+id/tv_user_name"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_regular_3x"
-            />
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="at home"
-            android:textSize="@dimen/text_regular"
-            android:layout_below="@id/tv_user_name"
-            />
 
 
 </com.example.ecome.view.viewpod.ProfileViewPod>

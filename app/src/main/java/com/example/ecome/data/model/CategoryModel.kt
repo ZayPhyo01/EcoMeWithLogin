@@ -18,9 +18,7 @@ class CategoryModel private constructor(context: Context) : BaseModel(context), 
         }
 
         fun getInstance(): CategoryModel {
-
             return INSTANCE!!
-
         }
     }
 
