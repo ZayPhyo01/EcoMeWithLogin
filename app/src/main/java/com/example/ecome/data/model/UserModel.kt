@@ -3,30 +3,38 @@ package com.example.ecome.data.model
 import android.content.Context
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.LoginResponse
-import com.example.ecome.network.response.RegisterResponse
 
-class UserModel private constructor(context: Context): BaseModel(context),ILogin{
+class UserModel private constructor(context: Context) : BaseModel(context), ILogin {
+    override fun isLogin(): Boolean {
+        return if (mEcoDatabase.getUserDao().getUserLogin() == 0) {
+            false
+        } else {
+            true
+        }
+    }
 
     companion object {
-         var INSTANCE : UserModel?=null
+        var INSTANCE: UserModel? = null
 
-        fun initUserModel(context: Context){
-            if(INSTANCE == null)
-            INSTANCE = UserModel(context)
+        fun initUserModel(context: Context) {
+            if (INSTANCE == null)
+                INSTANCE = UserModel(context)
         }
-        fun getInstance() : UserModel{
+
+        fun getInstance(): UserModel {
             return INSTANCE!!
         }
     }
 
-    override fun login(phone: String, pw: String,loginDelegate: ILogin.LoginDelegate) {
-        mDataAgent.login(phone,pw,object : BaseDelegate<LoginResponse>{
+    override fun login(phone: String, pw: String, loginDelegate: ILogin.LoginDelegate) {
+        mDataAgent.login(phone, pw, object : BaseDelegate<LoginResponse> {
             override fun fail(message: String) {
-                 loginDelegate.onFail("fail login")
+                loginDelegate.onFail("fail login")
             }
 
             override fun success(dataVo: LoginResponse) {
-              loginDelegate.onSuccess(dataVo.login_user)
+                loginDelegate.onSuccess(dataVo.login_user)
+                mEcoDatabase.getUserDao().saveUserLogin(dataVo.login_user)
             }
         })
 

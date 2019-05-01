@@ -8,8 +8,8 @@ import com.example.ecome.network.response.ProductResponse
 class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
 
     override fun getProductsById(id: Int): ProductVO {
-        return mEcoDatabase!!.getProductDao()
-            .getProductsWithId(mEcoDatabase!!.getProductImageDao(), mEcoDatabase!!.getProductDao(), id)
+        return mEcoDatabase.getProductDao()
+            .getProductsWithId(mEcoDatabase.getProductImageDao(), mEcoDatabase.getProductDao(), id)
     }
 
 
@@ -34,34 +34,33 @@ class ProductModel private constructor(context: Context) : BaseModel(context), I
 
         mDataAgent.loadProduct(object : BaseDelegate<ProductResponse> {
             override fun fail(message: String) {
-
                 delegate.onError(message)
             }
 
             override fun success(dataVo: ProductResponse) {
 
                 delegate.onSuccess(dataVo.products!!)
-                var debug = dataVo!!.products!!
+                //  val debug = dataVo.products!!
 
 
-                mEcoDatabase!!.getProductDao().saveProductsWithItems(
-                    dataVo.products!!, mEcoDatabase!!.getProductImageDao(),
-                    mEcoDatabase!!.getProductDao()
+                mEcoDatabase.getProductDao().saveProductsWithItems(
+                    dataVo.products!!, mEcoDatabase.getProductImageDao(),
+                    mEcoDatabase.getProductDao()
                 )
 
 
             }
 
         })
-        var result = mEcoDatabase!!.getProductDao().getProductsWithItems(
-            mEcoDatabase!!.getProductImageDao(),
-            mEcoDatabase!!.getProductDao()
+        val result = mEcoDatabase.getProductDao().getProductsWithItems(
+            mEcoDatabase.getProductImageDao(),
+            mEcoDatabase.getProductDao()
         )
         return result
     }
 
     fun isEmpty(): Boolean {
-        return if (mEcoDatabase!!.getProductDao().getProduct() == null) {
+        return if (mEcoDatabase.getProductDao().getProduct() == null) {
             true
         } else {
             false

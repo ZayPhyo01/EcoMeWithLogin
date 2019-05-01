@@ -4,5 +4,5 @@ import com.example.ecome.data.vos.LoginVO
 
 class LoginResponse : BaseResponse() {
 
-    var login_user : LoginVO = LoginVO()
+    lateinit var  login_user : LoginVO
 }

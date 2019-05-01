@@ -10,14 +10,14 @@ data class CategoryVO(
 
     @PrimaryKey
     @ColumnInfo(name = "category_id")
-    var category_id: Int = 0,
+    val category_id: Int,
 
     @ColumnInfo(name = "category_name")
-    var category_name: String= "",
+    val category_name: String,
 
     @ColumnInfo(name = "category_icon")
-    var category_icon: String = "",
+    val category_icon: String,
 
     @ColumnInfo(name = "category_color")
-    var category_color: String = ""
+    val category_color: String
 )

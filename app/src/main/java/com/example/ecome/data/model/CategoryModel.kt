@@ -33,7 +33,7 @@ class CategoryModel private constructor(context: Context) : BaseModel(context), 
             }
 
             override fun success(dataVo: CategoryResponse) {
-                mEcoDatabase!!.getCategoryDao().insertCategory(dataVo.categoryList!!)
+                mEcoDatabase.getCategoryDao().insertCategory(dataVo.categoryList!!)
 
                 result.onSuccess(dataVo.categoryList)
 
@@ -42,7 +42,7 @@ class CategoryModel private constructor(context: Context) : BaseModel(context), 
 
         })
 
-        return mEcoDatabase!!.getCategoryDao().getCategory()
+        return mEcoDatabase.getCategoryDao().getCategory()
     }
 
     fun isEmpty(): Boolean {

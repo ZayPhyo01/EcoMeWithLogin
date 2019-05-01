@@ -5,15 +5,17 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.example.ecome.data.vos.CategoryVO
+import com.example.ecome.data.vos.LoginVO
 import com.example.ecome.data.vos.ProductImageVO
 import com.example.ecome.data.vos.ProductVO
 
-@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class), version = 4)
+@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class,LoginVO::class), version = 6)
 abstract class EcoDatabase : RoomDatabase() {
 
     abstract fun getCategoryDao(): CategoryDao
     abstract fun getProductDao(): ProductDao
     abstract fun getProductImageDao(): ProductImageDao
+    abstract fun getUserDao() : UserDao
 
     companion object {
         val DATABASE_NAME = "ecodatabase1"

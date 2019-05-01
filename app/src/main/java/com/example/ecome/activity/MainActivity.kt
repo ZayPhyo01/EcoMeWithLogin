@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.example.ecome.R
 import com.example.ecome.adapter.CategoryAdapter
 import com.example.ecome.adapter.ProductAdapter
@@ -34,9 +32,6 @@ class MainActivity : BaseActivity(), TapDelegate {
     }
 
 
-
-
-
     companion object {
 
         fun newIntent(context: Context): Intent {
@@ -46,39 +41,51 @@ class MainActivity : BaseActivity(), TapDelegate {
         }
     }
 
-    lateinit var productRecyclerView: RecyclerView
-    lateinit var categoryModel: CategoryModel
-    lateinit var productModel: ProductModel
+
+    val categoryModel: CategoryModel
+    val productModel: ProductModel
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
-    lateinit var userModel: UserModel
+    val userModel: UserModel
+
+    init {
+        categoryModel = CategoryModel.getInstance()
+        productModel = ProductModel.getInstance()
+        userModel = UserModel.getInstance()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         toolbar.setTitle("Eco Me")
 
         bottomAppBar.replaceMenu(R.menu.nav)
 
+        //Check User is login or not
+        if(!userModel.isLogin()){
+            val intent = LoginActivity.newIntent(applicationContext)
+            startActivity(intent)
+        }
 
+        productAdapter = ProductAdapter(applicationContext, this)
+        categoryAdapter = CategoryAdapter(context = applicationContext, tap = this)
 
         //For category list
-        var layoutManager: LinearLayoutManager =
+        val layoutManager: LinearLayoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
         rv_category.layoutManager = layoutManager
-        categoryAdapter = CategoryAdapter(context = applicationContext, tap = this)
+
         rv_category.adapter = categoryAdapter
 
         //For product list
-        productRecyclerView = findViewById(R.id.rv_product)
-        var productlayoutManger: GridLayoutManager = GridLayoutManager(applicationContext, 2)
-        productRecyclerView.layoutManager = productlayoutManger
-        productAdapter = ProductAdapter(applicationContext, this)
-        productRecyclerView.adapter = productAdapter
 
-        categoryModel = CategoryModel.getInstance()
+        val productlayoutManger: GridLayoutManager = GridLayoutManager(applicationContext, 2)
+        rv_product.layoutManager = productlayoutManger
+
+        rv_product.adapter = productAdapter
+
         var categoryFromDb: MutableList<CategoryVO> = categoryModel.getCategoryList(object : ICategory.CategoryResult {
             override fun onError(message: String) {
 
@@ -94,7 +101,7 @@ class MainActivity : BaseActivity(), TapDelegate {
             categoryAdapter.setNewData(categoryFromDb)
         }
 
-        productModel = ProductModel.getInstance()
+
         var products: MutableList<ProductVO> = productModel.getProducts(object : IProduct.ProductDelegate {
             override fun onSuccess(products: MutableList<ProductVO>) {
                 var products = products
@@ -112,13 +119,13 @@ class MainActivity : BaseActivity(), TapDelegate {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.nav,menu)
+        menuInflater.inflate(R.menu.nav, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         Log.d("Menu id :", "${item!!.itemId}")
-        when(item!!.itemId){
+        when (item!!.itemId) {
             R.id.profile -> startActivity(ProfileActivity.newIntent(context = applicationContext))
             R.id.home -> startActivity(MainActivity.newIntent(applicationContext))
 

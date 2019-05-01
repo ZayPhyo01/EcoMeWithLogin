@@ -25,14 +25,12 @@ abstract class ProductDao {
 
         for (p in products) {
             var id = p.product_id
-            for (image in p.product_image_url!!) {
+            for (image in p.product_image_url) {
                 image.product_id = id
                 images.add(image)
             }
         }
-        var pid = productDao.insertProduct(products)
-        var debug = images
-        var id = imageDao.insertProductImage(images)
+
 
     }
 
@@ -41,7 +39,7 @@ abstract class ProductDao {
         var products: MutableList<ProductVO> = ArrayList()
         var collection = productDao.getProduct()
         for (p in collection) {
-            p.product_image_url = imageDao.getProductImageById(p.product_id!!)
+            p.product_image_url = imageDao.getProductImageById(p.product_id)
             var debug = p
 
             products.add(p)
@@ -55,7 +53,7 @@ abstract class ProductDao {
     fun getProductsWithId(imageDao: ProductImageDao, productDao: ProductDao,id:Int):  ProductVO {
 
             var collection = productDao.getProductById(id)
-          var images = imageDao.getProductImageById(collection.product_id!!)
+          var images = imageDao.getProductImageById(collection.product_id)
 
 
 

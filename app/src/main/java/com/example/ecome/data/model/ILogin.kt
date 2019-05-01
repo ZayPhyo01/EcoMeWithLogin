@@ -6,6 +6,8 @@ interface ILogin {
 
     fun login(phone: String, pw: String,loginDelegate: LoginDelegate )
 
+    fun isLogin(): Boolean
+
     fun logout()
 
     interface LoginDelegate {
