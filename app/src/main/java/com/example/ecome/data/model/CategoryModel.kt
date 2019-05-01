@@ -43,6 +43,9 @@ class CategoryModel private constructor(context: Context) : BaseModel(context), 
         return mEcoDatabase!!.getCategoryDao().getCategory()
     }
 
+
+    ///
+
     fun isEmpty(): Boolean {
         return mEcoDatabase.getCategoryDao().getCategory().isEmpty()
     }
