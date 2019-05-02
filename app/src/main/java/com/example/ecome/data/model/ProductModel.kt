@@ -8,19 +8,30 @@ import com.example.ecome.network.response.ProductResponse
 
 class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
 
+    override fun getProcuctHistory(): MutableList<ProductVO> {
+         return mEcoDatabase.getProductDao().getProuductHistory()
+    }
+
+    override fun saveProductHistoryWithId(id: Int) {
+       mEcoDatabase.getProductDao().upDateProductCountWithId(id,mEcoDatabase.getProductDao())
+    }
+
     override fun favouriteWithId(id: Int) {
        var id = mEcoDatabase.getFavDao().saveFavProductWithId(id)
         Log.d("fav id : "," $id")
     }
 
     override fun getFavouriteProuduct(): MutableList<ProductVO> {
-        val favProducts = mEcoDatabase.getProductDao().getFavProduct()
+        var favProducts = mEcoDatabase.getProductDao().getFavProduct()
+        if(favProducts == null) {
+            favProducts = ArrayList()
+        }
         return favProducts
     }
 
     override fun getProductsById(id: Int): ProductVO {
         return mEcoDatabase.getProductDao()
-            .getProductsWithId(mEcoDatabase.getProductImageDao(), mEcoDatabase.getProductDao(), id)
+            .getProductById(id)
     }
 
 
@@ -54,19 +65,14 @@ class ProductModel private constructor(context: Context) : BaseModel(context), I
                 //  val debug = dataVo.products!!
 
 
-                mEcoDatabase.getProductDao().saveProductsWithItems(
-                    dataVo.products, mEcoDatabase.getProductImageDao(),
-                    mEcoDatabase.getProductDao()
-                )
+                mEcoDatabase.getProductDao().insertProduct(dataVo.products)
+
 
 
             }
 
         })
-        val result = mEcoDatabase.getProductDao().getProductsWithItems(
-            mEcoDatabase.getProductImageDao(),
-            mEcoDatabase.getProductDao()
-        )
+        val result = mEcoDatabase.getProductDao().getProduct()
         return result
     }
 

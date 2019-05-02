@@ -8,6 +8,8 @@ interface ILogin {
 
     fun isLogin(): Boolean
 
+    fun getUserProfile() : LoginVO
+
     fun logout()
 
     interface LoginDelegate {

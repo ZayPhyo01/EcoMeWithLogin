@@ -3,41 +3,19 @@ package com.example.ecome.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 import com.example.ecome.R
-import com.example.ecome.adapter.CategoryAdapter
-import com.example.ecome.adapter.ProductAdapter
-import com.example.ecome.data.model.*
-import com.example.ecome.data.vos.CategoryVO
-import com.example.ecome.data.vos.ProductVO
-import com.example.ecome.delegate.FavDelegate
-import com.example.ecome.delegate.TapDelegate
-import com.example.ecome.util.AppUtils
+import com.example.ecome.adapter.HomePagerAdapter
+import com.example.ecome.data.model.UserModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), TapDelegate, FavDelegate {
+class MainActivity : BaseActivity() {
 
-    override fun onTapFav(productId: Int) {
-       productModel.favouriteWithId(
-            productId
-        )
+    var userModel: UserModel
+
+    init {
+        userModel = UserModel.getInstance()
     }
-
-
-    // to go details screen
-
-    override fun onTap(productId: Int) {
-        var intent = DetailProductActivity.newIntent(applicationContext)
-        intent.putExtra(AppUtils.PRODUCT_ID, productId)
-        startActivity(intent)
-
-    }
-
 
     companion object {
 
@@ -48,96 +26,27 @@ class MainActivity : BaseActivity(), TapDelegate, FavDelegate {
         }
     }
 
-
-    val categoryModel: CategoryModel
-    val productModel: ProductModel
-    lateinit var categoryAdapter: CategoryAdapter
-    lateinit var productAdapter: ProductAdapter
-    val userModel: UserModel
-
-    init {
-        categoryModel = CategoryModel.getInstance()
-        productModel = ProductModel.getInstance()
-        userModel = UserModel.getInstance()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        toolbar.setTitle("Eco Me")
 
-
-
-        //Check User is login or not
-        if (!userModel.isLogin()) {
-            val intent = LoginActivity.newIntent(applicationContext)
-            startActivity(intent)
+        if(!userModel.isLogin()){
+            startActivity(LoginActivity.newIntent(applicationContext))
+            finish()
         }
 
-        productAdapter = ProductAdapter(applicationContext, this, this)
-        categoryAdapter = CategoryAdapter(context = applicationContext, tap = this)
 
-        //For category list
-        val layoutManager: LinearLayoutManager =
-            LinearLayoutManager(applicationContext, LinearLayoutManager.HORIZONTAL, false)
-        rv_category.layoutManager = layoutManager
+        vp_home.adapter = HomePagerAdapter(supportFragmentManager)
+        tabHome.setupWithViewPager(vp_home)
+        tabHome.getTabAt(0)!!.icon = resources.getDrawable(R.drawable.ic_home_black_24dp)
+        tabHome.getTabAt(1)!!.icon = resources.getDrawable(R.drawable.ic_person_black_24dp)
 
-        rv_category.adapter = categoryAdapter
-
-        //For product list
-
-        val productlayoutManger: GridLayoutManager = GridLayoutManager(applicationContext, 2)
-        rv_product.layoutManager = productlayoutManger
-
-        rv_product.adapter = productAdapter
-
-        var categoryFromDb: MutableList<CategoryVO> = categoryModel.getCategoryList(object : ICategory.CategoryResult {
-            override fun onError(message: String) {
-
-            }
-
-            override fun onSuccess(categories: MutableList<CategoryVO>) {
-                val categoryResult = categories
-                categoryAdapter.setNewData(categoryResult)
+        fav.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                startActivity(FavouriteActivity.newIntent(applicationContext))
             }
         })
 
-        if (!categoryModel.isEmpty()) {
-            categoryAdapter.setNewData(categoryFromDb)
-        }
-
-
-        var products: MutableList<ProductVO> = productModel.getProducts(object : IProduct.ProductDelegate {
-            override fun onSuccess(products: MutableList<ProductVO>) {
-                var products = products
-                productAdapter.setNewData(products)
-            }
-
-            override fun onError(message: String) {
-
-            }
-        })
-
-        if (!productModel.isEmpty()) {
-            productAdapter.setNewData(products)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.nav, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        Log.d("Menu id :", "${item!!.itemId}")
-        when (item!!.itemId) {
-            R.id.profile -> startActivity(ProfileActivity.newIntent(context = applicationContext))
-            R.id.home -> startActivity(MainActivity.newIntent(applicationContext))
-
-        }
-        return super.onOptionsItemSelected(item)
     }
 
 

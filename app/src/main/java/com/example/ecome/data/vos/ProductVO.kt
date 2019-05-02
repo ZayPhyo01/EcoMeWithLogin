@@ -14,7 +14,8 @@ data class ProductVO(
     @ColumnInfo
     var product_name: String = "",
 
-    @Ignore
+    @TypeConverters
+    @ColumnInfo
     var product_image_url: MutableList<ProductImageVO> = ArrayList(),
 
     @ColumnInfo
@@ -30,7 +31,10 @@ data class ProductVO(
     var availability: Boolean = false,
 
     @ColumnInfo
-    var uploaded_date: String = ""
+    var uploaded_date: String = "",
+
+    @ColumnInfo
+    var history_count : Int =0
 
 
 

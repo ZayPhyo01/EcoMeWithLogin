@@ -12,6 +12,10 @@ interface IProduct {
 
     fun getFavouriteProuduct() : MutableList<ProductVO>
 
+    fun getProcuctHistory() : MutableList<ProductVO>
+
+    fun saveProductHistoryWithId(id : Int)
+
     interface ProductDelegate{
         fun onSuccess(products : MutableList<ProductVO>)
         fun onError(message : String)

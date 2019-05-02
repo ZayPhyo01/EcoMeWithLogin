@@ -23,7 +23,6 @@ abstract class BaseAdapter <T : BaseViewHolder<W>, W : Any>(context: Context) : 
 
 
     override fun onBindViewHolder(p0: BaseViewHolder<W>, p1: Int) {
-
         p0.bind(mData.get(p1))
     }
 

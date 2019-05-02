@@ -1,9 +1,6 @@
 package com.example.ecome.persistance
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.example.ecome.data.vos.FavouriteVO
 import com.example.ecome.data.vos.ProductImageVO
 import com.example.ecome.data.vos.ProductVO
@@ -22,51 +19,24 @@ abstract class ProductDao {
     abstract fun insertProduct(products: MutableList<ProductVO>): List<Long>
 
 
-    @Query("Select * from product inner join fav_table on product_id = favProductId")
+    @Query("Select * from product inner join fav_table on   favProductId = product_id")
     abstract fun getFavProduct() : MutableList<ProductVO>
 
+    @Query("Update product set history_count = :countItem where product_id = :id")
+    abstract fun upDateProductCount (countItem :Int , id : Int)
 
-    fun saveProductsWithItems(products: MutableList<ProductVO>, imageDao: ProductImageDao, productDao: ProductDao) {
-        var images: ArrayList<ProductImageVO> = ArrayList<ProductImageVO>()
+    @Query("Select * from product where history_count > 0")
+    abstract fun getProuductHistory() : MutableList<ProductVO>
 
-        for (p in products) {
-            var id = p.product_id
-            for (image in p.product_image_url) {
-                image.product_id = id
-                images.add(image)
-            }
-        }
-        productDao.insertProduct(products)
-        imageDao.insertProductImage(images)
+    @Query("Select history_count from product where product_id = :id")
+    abstract fun getProductCountWithId(id : Int) : Int
 
-
+    /**
+     * update the product history count by quering the count of item and increse +1 and save again to base
+     * method which is called by model class
+     */
+    fun upDateProductCountWithId(id : Int,productDao: ProductDao) {
+            productDao.upDateProductCount(productDao.getProductCountWithId(id)+1,id)
     }
-
-
-    fun getProductsWithItems(imageDao: ProductImageDao, productDao: ProductDao): MutableList<ProductVO> {
-        var products: MutableList<ProductVO> = ArrayList()
-        var collection = productDao.getProduct()
-        for (p in collection) {
-            p.product_image_url = imageDao.getProductImageById(p.product_id)
-
-
-            products.add(p)
-
-        }
-        var debug = products
-        return products
-
-    }
-
-    fun getProductsWithId(imageDao: ProductImageDao, productDao: ProductDao,id:Int):  ProductVO {
-
-            val collection = productDao.getProductById(id)
-            val images = imageDao.getProductImageById(collection.product_id)
-            collection.product_image_url = images
-
-
-        return collection
-        }
-
 
 }

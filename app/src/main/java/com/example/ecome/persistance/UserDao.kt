@@ -6,11 +6,15 @@ import android.arch.persistence.room.Query
 import com.example.ecome.data.vos.LoginVO
 
 @Dao
-interface UserDao {
+abstract class UserDao {
 
     @Insert
-    fun saveUserLogin(loginVO: LoginVO)
+    abstract fun saveUserLogin(loginVO: LoginVO)
 
-    @Query("Select count(*) from user_table")
-    fun getUserLogin() : Int
+    @Query("Select * from user_table")
+    abstract fun getUserLogin() : LoginVO
+
+    fun isEmpty(userDao: UserDao): Boolean = userDao.getUserLogin() == null
+
+
 }
