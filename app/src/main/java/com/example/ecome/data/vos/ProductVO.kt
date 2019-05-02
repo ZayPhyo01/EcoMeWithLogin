@@ -32,4 +32,6 @@ data class ProductVO(
     @ColumnInfo
     var uploaded_date: String = ""
 
+
+
 )

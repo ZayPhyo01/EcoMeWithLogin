@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
+import com.example.ecome.data.vos.FavouriteVO
 import com.example.ecome.data.vos.ProductImageVO
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.util.AppUtils
@@ -20,6 +21,11 @@ abstract class ProductDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun insertProduct(products: MutableList<ProductVO>): List<Long>
 
+
+    @Query("Select * from product inner join fav_table on product_id = favProductId")
+    abstract fun getFavProduct() : MutableList<ProductVO>
+
+
     fun saveProductsWithItems(products: MutableList<ProductVO>, imageDao: ProductImageDao, productDao: ProductDao) {
         var images: ArrayList<ProductImageVO> = ArrayList<ProductImageVO>()
 
@@ -30,6 +36,8 @@ abstract class ProductDao {
                 images.add(image)
             }
         }
+        productDao.insertProduct(products)
+        imageDao.insertProductImage(images)
 
 
     }
@@ -40,7 +48,7 @@ abstract class ProductDao {
         var collection = productDao.getProduct()
         for (p in collection) {
             p.product_image_url = imageDao.getProductImageById(p.product_id)
-            var debug = p
+
 
             products.add(p)
 
@@ -52,11 +60,8 @@ abstract class ProductDao {
 
     fun getProductsWithId(imageDao: ProductImageDao, productDao: ProductDao,id:Int):  ProductVO {
 
-            var collection = productDao.getProductById(id)
-          var images = imageDao.getProductImageById(collection.product_id)
-
-
-
+            val collection = productDao.getProductById(id)
+            val images = imageDao.getProductImageById(collection.product_id)
             collection.product_image_url = images
 
 

@@ -1,11 +1,22 @@
 package com.example.ecome.data.model
 
 import android.content.Context
+import android.util.Log
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.ProductResponse
 
 class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
+
+    override fun favouriteWithId(id: Int) {
+       var id = mEcoDatabase.getFavDao().saveFavProductWithId(id)
+        Log.d("fav id : "," $id")
+    }
+
+    override fun getFavouriteProuduct(): MutableList<ProductVO> {
+        val favProducts = mEcoDatabase.getProductDao().getFavProduct()
+        return favProducts
+    }
 
     override fun getProductsById(id: Int): ProductVO {
         return mEcoDatabase.getProductDao()
@@ -39,12 +50,12 @@ class ProductModel private constructor(context: Context) : BaseModel(context), I
 
             override fun success(dataVo: ProductResponse) {
 
-                delegate.onSuccess(dataVo.products!!)
+                delegate.onSuccess(dataVo.products)
                 //  val debug = dataVo.products!!
 
 
                 mEcoDatabase.getProductDao().saveProductsWithItems(
-                    dataVo.products!!, mEcoDatabase.getProductImageDao(),
+                    dataVo.products, mEcoDatabase.getProductImageDao(),
                     mEcoDatabase.getProductDao()
                 )
 

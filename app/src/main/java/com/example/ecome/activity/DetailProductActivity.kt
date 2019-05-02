@@ -42,7 +42,7 @@ class DetailProductActivity : BaseActivity() {
         //Get the id form main activity that cannot be null
         val id: Int = intent.getIntExtra(AppUtils.PRODUCT_ID, -1)
         Log.d(DetailProductActivity.javaClass.toString(), ": product $id ")
-        var productVo: ProductVO = productModel!!.getProductsById(id)
+        val productVo: ProductVO = productModel.getProductsById(id)
         tv_detail_product_desc.setText(productVo.product_desc)
         tv_detail_product_price.setText(productVo.product_price)
         tv_detail_product_name.setText(productVo.product_name)

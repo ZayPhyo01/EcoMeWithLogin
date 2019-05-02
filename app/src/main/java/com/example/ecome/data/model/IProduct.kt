@@ -8,6 +8,10 @@ interface IProduct {
 
     fun getProductsById(id : Int) : ProductVO
 
+    fun favouriteWithId(id : Int)
+
+    fun getFavouriteProuduct() : MutableList<ProductVO>
+
     interface ProductDelegate{
         fun onSuccess(products : MutableList<ProductVO>)
         fun onError(message : String)

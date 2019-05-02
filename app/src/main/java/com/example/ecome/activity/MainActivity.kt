@@ -15,11 +15,18 @@ import com.example.ecome.adapter.ProductAdapter
 import com.example.ecome.data.model.*
 import com.example.ecome.data.vos.CategoryVO
 import com.example.ecome.data.vos.ProductVO
+import com.example.ecome.delegate.FavDelegate
 import com.example.ecome.delegate.TapDelegate
 import com.example.ecome.util.AppUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity(), TapDelegate {
+class MainActivity : BaseActivity(), TapDelegate, FavDelegate {
+
+    override fun onTapFav(productId: Int) {
+       productModel.favouriteWithId(
+            productId
+        )
+    }
 
 
     // to go details screen
@@ -61,15 +68,15 @@ class MainActivity : BaseActivity(), TapDelegate {
         setSupportActionBar(toolbar)
         toolbar.setTitle("Eco Me")
 
-        bottomAppBar.replaceMenu(R.menu.nav)
+
 
         //Check User is login or not
-        if(!userModel.isLogin()){
+        if (!userModel.isLogin()) {
             val intent = LoginActivity.newIntent(applicationContext)
             startActivity(intent)
         }
 
-        productAdapter = ProductAdapter(applicationContext, this)
+        productAdapter = ProductAdapter(applicationContext, this, this)
         categoryAdapter = CategoryAdapter(context = applicationContext, tap = this)
 
         //For category list
@@ -132,5 +139,6 @@ class MainActivity : BaseActivity(), TapDelegate {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 }
