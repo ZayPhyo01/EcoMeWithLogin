@@ -1,32 +1,16 @@
 package com.example.ecome.data.model
 
-import android.content.Context
 import com.example.ecome.data.vos.LoginVO
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.LoginResponse
 
-class UserModel private constructor(context: Context) : BaseModel(context), ILogin {
+object UserModel : BaseModel(), ILogin {
 
     override fun getUserProfile(): LoginVO {
-         return mEcoDatabase.getUserDao().getUserLogin()
+        return mEcoDatabase.getUserDao().getUserLogin()
     }
 
     override fun isLogin(): Boolean = !mEcoDatabase.getUserDao().isEmpty(mEcoDatabase.getUserDao())
-
-
-    companion object {
-        var INSTANCE: UserModel? = null
-
-        fun initUserModel(context: Context) {
-            if (INSTANCE == null)
-                INSTANCE = UserModel(context)
-        }
-
-        fun getInstance(): UserModel {
-            return INSTANCE!!
-        }
-    }
-
 
 
     override fun login(phone: String, pw: String, loginDelegate: ILogin.LoginDelegate) {

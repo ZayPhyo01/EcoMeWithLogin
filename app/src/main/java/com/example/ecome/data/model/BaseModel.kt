@@ -6,8 +6,12 @@ import com.example.ecome.network.ProductDataAgent
 import com.example.ecome.persistance.EcoDatabase
 import com.example.ecome.util.DataAgentUtil
 
-open class BaseModel(context: Context) {
+open class BaseModel() {
 
     val mDataAgent = ProductDataAgent.getInstance()
-    val mEcoDatabase : EcoDatabase = EcoDatabase.getInstance(context)
+    lateinit var mEcoDatabase : EcoDatabase
+
+    fun initDatabase(context: Context)  {
+        mEcoDatabase = EcoDatabase.getInstance(context)
+    }
 }

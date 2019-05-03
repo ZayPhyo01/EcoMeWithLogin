@@ -8,11 +8,10 @@ import com.example.ecome.data.model.UserModel
 import com.example.ecome.persistance.EcoDatabase
 
 class EcoApp : Application() {
-
     override fun onCreate() {
         super.onCreate()
-        CategoryModel.initCategoryModel(applicationContext)
-        ProductModel.initProductModel(applicationContext)
-        UserModel.initUserModel(applicationContext)
+        CategoryModel.initDatabase(applicationContext)
+        ProductModel.initDatabase(applicationContext)
+        UserModel.initDatabase(applicationContext)
     }
 }

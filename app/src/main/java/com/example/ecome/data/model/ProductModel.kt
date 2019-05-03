@@ -6,7 +6,7 @@ import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.ProductResponse
 
-class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
+object ProductModel   : BaseModel( ), IProduct {
 
     override fun getProcuctHistory(): MutableList<ProductVO> {
          return if(mEcoDatabase.getProductDao().getProuductHistory()==null) { ArrayList()} else{ mEcoDatabase.getProductDao().getProuductHistory()}
@@ -34,23 +34,6 @@ class ProductModel private constructor(context: Context) : BaseModel(context), I
             .getProductById(id)
     }
 
-
-    companion object {
-
-        fun initProductModel(context: Context) {
-            if (productModel == null) {
-                productModel = ProductModel(context)
-            }
-        }
-
-        var productModel: ProductModel? = null
-
-        fun getInstance(): ProductModel {
-
-            return productModel!!
-
-        }
-    }
 
     override fun getProducts(delegate: IProduct.ProductDelegate): MutableList<ProductVO> {
 
