@@ -11,6 +11,8 @@ open class BaseModel() {
     val mDataAgent = ProductDataAgent.getInstance()
     lateinit var mEcoDatabase : EcoDatabase
 
+
+    //Todo to ask , Like that should be ?
     fun initDatabase(context: Context)  {
         mEcoDatabase = EcoDatabase.getInstance(context)
     }

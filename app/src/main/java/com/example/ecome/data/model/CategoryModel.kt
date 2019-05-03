@@ -7,6 +7,9 @@ import com.example.ecome.network.response.CategoryResponse
 
 object CategoryModel  : BaseModel( ), ICategory {
 
+
+    fun getInstance() : CategoryModel = CategoryModel
+
     override fun getCategoryList(result: ICategory.CategoryResult): MutableList<CategoryVO> {
 
 

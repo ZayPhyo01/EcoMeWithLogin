@@ -6,6 +6,8 @@ import com.example.ecome.network.response.LoginResponse
 
 object UserModel : BaseModel(), ILogin {
 
+    fun getInstance() : UserModel = UserModel
+
     override fun getUserProfile(): LoginVO {
         return mEcoDatabase.getUserDao().getUserLogin()
     }

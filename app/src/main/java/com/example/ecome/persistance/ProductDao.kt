@@ -15,10 +15,12 @@ abstract class ProductDao {
     @Query("Select * from product where product_id = :id")
     abstract fun getProductById(id: Int): ProductVO
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertProduct(products: MutableList<ProductVO>): List<Long>
 
 
+    //Todo to ask ,this dao should be in the favDao or not because it query the data from product table and not from fav table
+    //Todo to ask , also should return the collection of ProductVO or need to create FavouriteVO with attribute in the ProductVo
     @Query("Select * from product inner join fav_table on   favProductId = product_id")
     abstract fun getFavProduct() : MutableList<ProductVO>
 

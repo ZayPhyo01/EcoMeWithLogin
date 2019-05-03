@@ -8,6 +8,8 @@ import com.example.ecome.network.response.ProductResponse
 
 object ProductModel   : BaseModel( ), IProduct {
 
+    fun getInstance() : ProductModel = ProductModel
+
     override fun getProcuctHistory(): MutableList<ProductVO> {
          return if(mEcoDatabase.getProductDao().getProuductHistory()==null) { ArrayList()} else{ mEcoDatabase.getProductDao().getProuductHistory()}
     }
