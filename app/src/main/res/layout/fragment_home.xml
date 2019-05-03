@@ -36,6 +36,7 @@
                           android:layout_width="match_parent"
                           android:drawableLeft="@drawable/search"
                           android:background="#fff"
+                          android:focusable="false"
                           android:drawablePadding="@dimen/margin_medium_2"
                           android:layout_marginRight="@dimen/margin_medium_2"
                           android:paddingLeft="@dimen/margin_medium_2"

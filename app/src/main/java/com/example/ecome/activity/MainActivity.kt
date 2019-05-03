@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.example.ecome.R
 import com.example.ecome.adapter.HomePagerAdapter
 import com.example.ecome.data.model.UserModel
@@ -11,7 +12,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
-    var userModel: UserModel
+    val userModel: UserModel
+    var keep: Boolean = false
 
     init {
         userModel = UserModel.getInstance()
@@ -30,7 +32,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(!userModel.isLogin()){
+        if (!userModel.isLogin()) {
             startActivity(LoginActivity.newIntent(applicationContext))
             finish()
         }
@@ -41,11 +43,22 @@ class MainActivity : BaseActivity() {
         tabHome.getTabAt(0)!!.icon = resources.getDrawable(R.drawable.ic_home_black_24dp)
         tabHome.getTabAt(1)!!.icon = resources.getDrawable(R.drawable.ic_person_black_24dp)
 
-        fav.setOnClickListener(object : View.OnClickListener{
+        fav.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 startActivity(FavouriteActivity.newIntent(applicationContext))
             }
         })
+
+    }
+
+    override fun onBackPressed() {
+
+        Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
+        if (keep) {
+            finish()
+        }
+
+        keep = true
 
     }
 

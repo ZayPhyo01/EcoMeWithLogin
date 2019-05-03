@@ -2,7 +2,9 @@ package com.example.ecome.activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
 import com.example.ecome.R
@@ -30,6 +32,10 @@ class FavouriteActivity : BaseActivity() , TapDelegate{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favourite)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+              getWindow().setStatusBarColor(ContextCompat.getColor(applicationContext, R.color.whiteStatusBarColor));
+             }
+
         favouriteAdapter = FavouriteAdapter(applicationContext,this)
         var favProduct = productModel.getFavouriteProuduct()
         favouriteAdapter.setNewData(favProduct)

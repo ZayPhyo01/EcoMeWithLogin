@@ -8,4 +8,6 @@
     <color name="searchItemColor">#BDBDBD</color>
     <color name="category">#535151</color>
     <color name="product_name_color">#FFFFFF</color>
+    <color name="appBarstatusColor">#5375CA</color>
+    <color name="whiteStatusBarColor">#DFDADA</color>
 </resources>

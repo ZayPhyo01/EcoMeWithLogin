@@ -9,7 +9,7 @@ import com.example.ecome.network.response.ProductResponse
 class ProductModel private constructor(context: Context) : BaseModel(context), IProduct {
 
     override fun getProcuctHistory(): MutableList<ProductVO> {
-         return mEcoDatabase.getProductDao().getProuductHistory()
+         return if(mEcoDatabase.getProductDao().getProuductHistory()==null) { ArrayList()} else{ mEcoDatabase.getProductDao().getProuductHistory()}
     }
 
     override fun saveProductHistoryWithId(id: Int) {

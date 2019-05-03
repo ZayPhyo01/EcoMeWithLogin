@@ -1,7 +1,9 @@
 package com.example.ecome.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -68,11 +70,19 @@ class HomeFragment : BaseFragment(), FavDelegate, TapDelegate {
         categoryAdapter = CategoryAdapter(context!!, this)
         productAdapter = ProductAdapter(context!!, this, this)
 
+
         //set up for category data
         setUpCategory()
         setUpProduct()
 
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                       activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
+                   }
     }
 
     /**
