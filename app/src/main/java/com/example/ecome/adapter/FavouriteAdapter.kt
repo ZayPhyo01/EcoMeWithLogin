@@ -9,10 +9,9 @@ import com.example.ecome.view.holders.BaseViewHolder
 import com.example.ecome.view.holders.FavouriteViewHolder
 import kotlinx.android.synthetic.main.activity_main.view.*
 
-class FavouriteAdapter (context: Context,val tap : TapDelegate): BaseAdapter<FavouriteViewHolder,ProductVO>(context) {
+class FavouriteAdapter (context: Context): BaseAdapter<FavouriteViewHolder,ProductVO>(context) {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder<ProductVO> {
         var view = mLayoutInflator.inflate(R.layout.item_view_fav,p0,false)
-        return FavouriteViewHolder(view,tap)
-    }
+        return FavouriteViewHolder(view)   }
 }

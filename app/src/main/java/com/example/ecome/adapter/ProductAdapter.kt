@@ -7,15 +7,16 @@ import com.example.ecome.R
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.FavDelegate
 import com.example.ecome.delegate.TapDelegate
+import com.example.ecome.mvp.presenter.HomePresenter
 import com.example.ecome.view.holders.BaseViewHolder
 import com.example.ecome.view.holders.ProductViewHolder
 
-class ProductAdapter(context: Context, var tap: TapDelegate, var fav: FavDelegate) :
+class ProductAdapter(context: Context,var mPresenter: HomePresenter) :
     BaseAdapter<ProductViewHolder, ProductVO>(context) {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder<ProductVO> {
         val view: View = mLayoutInflator.inflate(R.layout.item_view_product, p0, false)
-        return ProductViewHolder(view, tap,fav)
+        return ProductViewHolder(view, mPresenter)
     }
 
 }

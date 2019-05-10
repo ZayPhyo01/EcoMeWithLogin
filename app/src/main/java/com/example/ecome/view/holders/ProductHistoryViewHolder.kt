@@ -6,7 +6,7 @@ import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.TapDelegate
 import kotlinx.android.synthetic.main.item_view_history.view.*
 
-class ProductHistoryViewHolder(view : View,tap : TapDelegate) : BaseViewHolder<ProductVO>(view,tap) {
+class ProductHistoryViewHolder(view : View) : BaseViewHolder<ProductVO>(view) {
     override fun onClick(v: View?) {
 
     }

@@ -8,11 +8,11 @@ import com.example.ecome.delegate.TapDelegate
 import com.example.ecome.view.holders.BaseViewHolder
 import com.example.ecome.view.holders.ProductHistoryViewHolder
 
-class HistoryAdapter(context: Context, val tap: TapDelegate) :
+class HistoryAdapter(context: Context) :
     BaseAdapter<ProductHistoryViewHolder, ProductVO>(context) {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): BaseViewHolder<ProductVO> {
         var view = mLayoutInflator.inflate(R.layout.item_view_history, p0, false)
-        return ProductHistoryViewHolder(view, tap)
+        return ProductHistoryViewHolder(view)
     }
 }

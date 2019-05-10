@@ -7,31 +7,18 @@ import com.example.ecome.data.vos.FavouriteVO
 @Dao
 abstract class FavouriteDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertFavProductId(favouriteVO: FavouriteVO): Long
+
+    @Delete
+    abstract fun deleteFavWithId(favouriteVO: FavouriteVO)
 
     @Query("Select * from fav_table where favProductId = :fid")
     abstract fun getFavItemWithId(fid: Int): FavouriteVO
 
-    @Delete
-    abstract fun removeFavItem(favouriteVO: FavouriteVO)
+    @Query("Select * from fav_table")
+    abstract fun getFavItemId(): MutableList<FavouriteVO>
 
-
-    //Todo to ask because I think this method against single reponsiblity principle.This reposible should be in the dao or model
-    fun saveFavProductWithId(id: Int) {
-        var favouriteVO = FavouriteVO(id)
-        var favItem = getFavItemWithId(id)
-        if (favItem == null) {
-            //item is not favourite
-            insertFavProductId(favouriteVO)
-        } else {
-            //item already favourite
-            removeFavItem(favouriteVO)
-
-        }
-
-
-    }
 
 
 }

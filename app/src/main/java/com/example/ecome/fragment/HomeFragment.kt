@@ -18,47 +18,64 @@ import com.example.ecome.data.model.ICategory
 import com.example.ecome.data.model.IProduct
 import com.example.ecome.data.model.ProductModel
 import com.example.ecome.data.vos.CategoryVO
+import com.example.ecome.data.vos.FavouriteVO
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.FavDelegate
 import com.example.ecome.delegate.TapDelegate
+import com.example.ecome.mvp.presenter.HomePresenter
+import com.example.ecome.mvp.presenter.IHomePresenter
+import com.example.ecome.mvp.view.HomeView
 import com.example.ecome.util.AppUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment(), FavDelegate, TapDelegate {
+class HomeFragment : BaseFragment(),HomeView {
+
+    override fun nevigateTo(id : Int) {
+        var intent: Intent = DetailProductActivity.newIntent(context!!)
+        intent.putExtra(AppUtils.PRODUCT_ID, id)
+        context!!.startActivity(intent)
+    }
+
+    override fun showCategoryList(categoryList: MutableList<CategoryVO>) {
+        setUpCategory(categoryList)
+    }
+
+    override fun showProductList(productList: MutableList<ProductVO>) {
+        var productListDebug = productList
+        setUpProduct(productList)
+    }
 
 
     companion object {
-              fun newInstance(): HomeFragment {
-                  return HomeFragment()
-              }
-          }
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
 
+    var homePresenter : HomePresenter
     var categoryModel: CategoryModel
-    var productModel: ProductModel
+
     lateinit var categoryAdapter: CategoryAdapter
     lateinit var productAdapter: ProductAdapter
 
     init {
         categoryModel = CategoryModel.getInstance()
-        productModel = ProductModel.getInstance()
+
+        homePresenter = HomePresenter(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onTapFav(productId: Int) {
-        productModel.favouriteWithId(productId)
-    }
 
-    override fun onTap(productId: Int) {
 
+ /*   override fun onTap(productId: Int) {
         productModel.saveProductHistoryWithId(productId)
-
         var intent: Intent = DetailProductActivity.newIntent(context!!)
         intent.putExtra(AppUtils.PRODUCT_ID, productId)
         context!!.startActivity(intent)
-    }
+    }*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -67,60 +84,43 @@ class HomeFragment : BaseFragment(), FavDelegate, TapDelegate {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        categoryAdapter = CategoryAdapter(context!!, this)
-        productAdapter = ProductAdapter(context!!, this, this)
 
+        categoryAdapter = CategoryAdapter(context!!)
+        productAdapter = ProductAdapter(context!!,homePresenter)
+        rv_category.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_category.adapter = categoryAdapter
 
-        //set up for category data
-        setUpCategory()
-        setUpProduct()
+        rv_product.layoutManager = GridLayoutManager(context, 2)
+        rv_product.adapter = productAdapter
 
-
+        homePresenter.onUiReady()
     }
+
+
 
     override fun onStart() {
         super.onStart()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                       activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
-                   }
+            activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
+        }
+
+
     }
 
     /**
      * set up category with catgory data by showing on recyclerview
      * contain category adapter
      */
-    fun setUpCategory() {
-        rv_category.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_category.adapter = categoryAdapter
-       var categoryData = categoryModel.getCategoryList(object : ICategory.CategoryResult {
-            override fun onSuccess(categories: MutableList<CategoryVO>) {
-                categoryAdapter.setNewData(categories)
-            }
+    fun setUpCategory(categoryList: MutableList<CategoryVO>) {
 
-            override fun onError(message: String) {
+        categoryAdapter.setNewData(categoryList)
 
-            }
-        })
-
-        if(categoryData!=null) {
-            categoryAdapter.setNewData(categoryData)
-        }
     }
 
-    fun setUpProduct() {
-        rv_product.layoutManager = GridLayoutManager(context, 2)
-        rv_product.adapter = productAdapter
-        var productData = productModel.getProducts(object : IProduct.ProductDelegate {
-            override fun onError(message: String) {
+    fun setUpProduct(productList: MutableList<ProductVO>) {
 
-            }
+        productAdapter.setNewData(productList)
 
-            override fun onSuccess(products: MutableList<ProductVO>) {
-                productAdapter.setNewData(products)
-            }
-        })
-        if(productData!=null) {
-            productAdapter.setNewData(productData)
-        }
+
     }
 }

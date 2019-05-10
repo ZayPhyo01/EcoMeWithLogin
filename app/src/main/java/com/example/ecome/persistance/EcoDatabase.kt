@@ -5,7 +5,7 @@ import android.content.Context
 import com.example.ecome.data.vos.*
 import com.example.ecome.persistance.typeconveter.ImageTypeConveter
 
-@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class,LoginVO::class, FavouriteVO::class), version = 11)
+@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class,LoginVO::class, FavouriteVO::class), version = 14)
 @TypeConverters(ImageTypeConveter::class)
 abstract class EcoDatabase : RoomDatabase() {
 

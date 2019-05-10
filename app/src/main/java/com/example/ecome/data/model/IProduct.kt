@@ -10,15 +10,16 @@ interface IProduct {
 
     fun favouriteWithId(id : Int)
 
+    fun unFavouriteWithId(id : Int)
+
     fun getFavouriteProuduct() : MutableList<ProductVO>
 
-    fun getProcuctHistory() : MutableList<ProductVO>
+    fun getProductHistory() : MutableList<ProductVO>
 
     fun saveProductHistoryWithId(id : Int)
 
     interface ProductDelegate{
         fun onSuccess(products : MutableList<ProductVO>)
         fun onError(message : String)
-
     }
 }

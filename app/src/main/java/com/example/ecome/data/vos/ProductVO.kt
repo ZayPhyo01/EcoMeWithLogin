@@ -7,6 +7,7 @@ import com.example.ecome.persistance.typeconveter.ImageTypeConveter
 @Entity(tableName = "product")
 
 data class ProductVO(
+
     @PrimaryKey
     @ColumnInfo
     var product_id: Int = 0,
@@ -34,8 +35,10 @@ data class ProductVO(
     var uploaded_date: String = "",
 
     @ColumnInfo
-    var history_count : Int =0
+    var history_count : Int = 0,
 
 
+    @Ignore
+    var isFavourite : Boolean = false
 
 )

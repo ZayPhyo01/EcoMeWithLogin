@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.example.ecome.delegate.TapDelegate
 
-abstract class BaseViewHolder<S : Any>(view : View,var tap : TapDelegate):RecyclerView.ViewHolder(view),View.OnClickListener {
+abstract class BaseViewHolder<S : Any>(view : View):RecyclerView.ViewHolder(view),View.OnClickListener {
 
 
     protected var bindData : S?=null

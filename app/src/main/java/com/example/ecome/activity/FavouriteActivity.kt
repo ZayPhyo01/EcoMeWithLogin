@@ -10,19 +10,24 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import com.example.ecome.R
 import com.example.ecome.adapter.FavouriteAdapter
 import com.example.ecome.data.model.ProductModel
+import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.delegate.TapDelegate
+import com.example.ecome.mvp.presenter.FavouritePresenter
+import com.example.ecome.mvp.view.FavouriteView
 import kotlinx.android.synthetic.main.activity_favourite.*
 
-class FavouriteActivity : BaseActivity() , TapDelegate{
-    override fun onTap(productId: Int) {
-     }
+class FavouriteActivity : BaseActivity(),FavouriteView {
+
+    override fun showFavoriteList(favouriteProducts: MutableList<ProductVO>) {
+        favouriteAdapter.setNewData(favouriteProducts)
+    }
 
 
-    var productModel : ProductModel
+    var favPresenter : FavouritePresenter
     lateinit var favouriteAdapter: FavouriteAdapter
 
     init {
-        productModel = ProductModel.getInstance()
+        favPresenter = FavouritePresenter(this)
     }
 
     companion object {
@@ -31,16 +36,16 @@ class FavouriteActivity : BaseActivity() , TapDelegate{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_favourite)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
               getWindow().setStatusBarColor(ContextCompat.getColor(applicationContext, R.color.whiteStatusBarColor));
              }
 
-        favouriteAdapter = FavouriteAdapter(applicationContext,this)
-        var favProduct = productModel.getFavouriteProuduct()
-        favouriteAdapter.setNewData(favProduct)
+        favouriteAdapter = FavouriteAdapter(applicationContext)
         rvFavourite.layoutManager =  StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rvFavourite.adapter = favouriteAdapter
+        favPresenter.onUiReady()
 
     }
 }
