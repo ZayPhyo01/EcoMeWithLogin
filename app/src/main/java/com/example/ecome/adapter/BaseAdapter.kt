@@ -1,14 +1,14 @@
 package com.example.ecome.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import com.example.ecome.view.holders.BaseViewHolder
 
-abstract class BaseAdapter <T : BaseViewHolder<W>, W : Any>(context: Context) : RecyclerView.Adapter<BaseViewHolder<W>>() {
+abstract class BaseAdapter <T : BaseViewHolder<W>, W : Any>: androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder<W>>() {
 
     protected var mData: MutableList<W> = ArrayList()
-    protected var mLayoutInflator: LayoutInflater
+
 
     val items: List<W>
         get() {
@@ -18,7 +18,7 @@ abstract class BaseAdapter <T : BaseViewHolder<W>, W : Any>(context: Context) : 
 
     init {
         mData = ArrayList()
-        mLayoutInflator = LayoutInflater.from(context)
+
     }
 
 

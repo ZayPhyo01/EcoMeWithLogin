@@ -1,11 +1,11 @@
 package com.example.ecome.data.vos
 
-import android.arch.persistence.room.*
-import android.support.annotation.ColorInt
+
+import androidx.annotation.ColorInt
+import androidx.room.*
 import com.example.ecome.persistance.typeconveter.ImageTypeConveter
 
 @Entity(tableName = "product")
-
 data class ProductVO(
 
     @PrimaryKey
@@ -38,7 +38,7 @@ data class ProductVO(
     var history_count : Int = 0,
 
 
-    @Ignore
+    @ColumnInfo
     var isFavourite : Boolean = false
 
 )

@@ -1,6 +1,8 @@
 package com.example.ecome.persistance
 
-import android.arch.persistence.room.*
+
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.example.ecome.data.vos.FavouriteVO
 
 
@@ -14,10 +16,10 @@ abstract class FavouriteDao {
     abstract fun deleteFavWithId(favouriteVO: FavouriteVO)
 
     @Query("Select * from fav_table where favProductId = :fid")
-    abstract fun getFavItemWithId(fid: Int): FavouriteVO
+    abstract fun getFavItemWithId(fid: Int): LiveData<FavouriteVO>
 
     @Query("Select * from fav_table")
-    abstract fun getFavItemId(): MutableList<FavouriteVO>
+    abstract fun getFavItemId(): LiveData<MutableList<FavouriteVO>>
 
 
 

@@ -5,9 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.example.ecome.R
 import com.example.ecome.data.model.ILogin
 import com.example.ecome.data.model.UserModel
@@ -36,11 +37,11 @@ class LoginActivity : BaseActivity(), LoginView {
 
     }
 
-    val loginPresenter: LoginPresenter
+   lateinit var loginPresenter: LoginPresenter
 
-    init {
-        loginPresenter = LoginPresenter(this)
-    }
+
+
+
 
 
     companion object {
@@ -53,7 +54,8 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        loginPresenter = ViewModelProviders.of(this).get(LoginPresenter::class.java)
+        loginPresenter.initView(this)
         setContentView(R.layout.activity_register)
 
 
@@ -66,5 +68,6 @@ class LoginActivity : BaseActivity(), LoginView {
             }
         })
     }
+
 
 }

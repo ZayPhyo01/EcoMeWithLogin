@@ -1,10 +1,14 @@
 package com.example.ecome.mvp.presenter
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.example.ecome.data.model.ProductModel
+import com.example.ecome.data.vos.FavouriteVO
+import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.mvp.view.FavouriteView
 import com.example.ecome.mvp.view.HomeView
 
-class FavouritePresenter (val favouriteView: FavouriteView): BasePresenter() , IFavouritePresenter{
+class FavouritePresenter : BasePresenter<FavouriteView>() , IFavouritePresenter{
 
     val productModel : ProductModel
 
@@ -12,24 +16,15 @@ class FavouritePresenter (val favouriteView: FavouriteView): BasePresenter() , I
         productModel = ProductModel.getInstance()
     }
 
-    override fun onUiReady() {
-        favouriteView.showFavoriteList(productModel.getFavouriteProuduct())
+    override fun onUiReady(lifecycleOwner: LifecycleOwner) {
+        productModel.getFavouriteProuduct().observe(lifecycleOwner,object : Observer<MutableList<ProductVO>>{
+            override fun onChanged(t: MutableList<ProductVO>?) {
+               mView.showFavoriteList(t!!)  }
+
+        })
+
 
     }
 
-    override fun onCreate() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override fun onStart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onStop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onDestroy() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

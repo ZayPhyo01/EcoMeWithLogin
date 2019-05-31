@@ -3,7 +3,6 @@ package com.example.ecome.view.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import com.example.ecome.data.vos.ProductVO
-import com.example.ecome.delegate.TapDelegate
 import kotlinx.android.synthetic.main.item_view_history.view.*
 
 class ProductHistoryViewHolder(view : View) : BaseViewHolder<ProductVO>(view) {

@@ -1,6 +1,7 @@
 package com.example.ecome.persistance.typeconveter
 
-import android.arch.persistence.room.TypeConverter
+
+import androidx.room.TypeConverter
 import com.example.ecome.data.vos.ProductImageVO
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

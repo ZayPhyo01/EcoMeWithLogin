@@ -5,7 +5,7 @@ import com.example.ecome.data.model.UserModel
 import com.example.ecome.data.vos.LoginVO
 import com.example.ecome.mvp.view.LoginView
 
-class LoginPresenter(val loginView: LoginView) : BasePresenter(),ILoginPresenter {
+class LoginPresenter() : BasePresenter<LoginView>(),ILoginPresenter {
 
     val userModel : UserModel
 
@@ -13,33 +13,18 @@ class LoginPresenter(val loginView: LoginView) : BasePresenter(),ILoginPresenter
         userModel = UserModel.getInstance()
     }
 
-    override fun onCreate() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onStart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onStop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onDestroy() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun onTapLogin() {
-        loginView.showProgress()
+        mView.showProgress()
         userModel.login(" 3","e",object : ILogin.LoginDelegate{
             override fun onFail(message: String) {
-                 loginView.hideProgress()
+                 mView.hideProgress()
             }
 
             override fun onSuccess(loginVO: LoginVO) {
 
-                loginView.login()
-                loginView.hideProgress()
+                mView.login()
+                mView.hideProgress()
             }
         })
 

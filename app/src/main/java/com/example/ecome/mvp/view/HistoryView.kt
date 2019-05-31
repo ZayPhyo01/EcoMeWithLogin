@@ -4,7 +4,7 @@ import com.example.ecome.data.model.UserModel
 import com.example.ecome.data.vos.LoginVO
 import com.example.ecome.data.vos.ProductVO
 
-interface HistoryView {
+interface HistoryView : BaseView{
     fun showHistoryList(products : MutableList<ProductVO>)
     fun showUserName(name : String)
     fun showUserAddress(address : String)

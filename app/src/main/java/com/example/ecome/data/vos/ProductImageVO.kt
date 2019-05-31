@@ -1,6 +1,10 @@
 package com.example.ecome.data.vos
 
-import android.arch.persistence.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+
 
 @Entity(
     tableName = "product_images",

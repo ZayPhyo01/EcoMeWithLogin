@@ -4,21 +4,31 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.example.ecome.R
 import com.example.ecome.data.model.ProductModel
 import com.example.ecome.data.vos.ProductVO
+import com.example.ecome.mvp.presenter.DetailProductPresenter
+import com.example.ecome.mvp.view.DetailProductView
 import com.example.ecome.util.AppUtils
 import kotlinx.android.synthetic.main.detail_product_activity.*
 
-class DetailProductActivity : BaseActivity() {
+class DetailProductActivity : BaseActivity(), DetailProductView {
 
+    override fun showDetailProduct(productVO: ProductVO) {
+        tv_detail_product_desc.setText(productVO.product_desc)
+        tv_detail_product_price.setText(productVO.product_price)
+        tv_detail_product_name.setText(productVO.product_name)
+        val imageUrl = productVO.product_image_url
 
-   val productModel: ProductModel
-
-    init {
-        productModel = ProductModel.getInstance()
+        if (imageUrl.size > 0)
+            Glide.with(applicationContext)
+                .load(imageUrl[0].image_url)
+                .into(imv_detail_product)
     }
+
+ lateinit var  detailProductPresenter: DetailProductPresenter
 
 
     companion object {
@@ -27,14 +37,14 @@ class DetailProductActivity : BaseActivity() {
             var intent = Intent(context, DetailProductActivity::class.java)
             return intent
         }
-
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_product_activity)
 
+        detailProductPresenter = ViewModelProviders.of(this).get(DetailProductPresenter::class.java)
+        detailProductPresenter.initView(this)
 
         //Init View
 
@@ -42,16 +52,6 @@ class DetailProductActivity : BaseActivity() {
         //Get the id form main activity that cannot be null
         val id: Int = intent.getIntExtra(AppUtils.PRODUCT_ID, -1)
         Log.d(DetailProductActivity.javaClass.toString(), ": product $id ")
-        val productVo: ProductVO = productModel.getProductsById(id)
-        tv_detail_product_desc.setText(productVo.product_desc)
-        tv_detail_product_price.setText(productVo.product_price)
-        tv_detail_product_name.setText(productVo.product_name)
-        var imageUrl = productVo.product_image_url
-
-        if (imageUrl!!.size > 0)
-            Glide.with(applicationContext)
-                .load(imageUrl[0].image_url)
-                .into(imv_detail_product)
-
+        detailProductPresenter.onUiReady(id,this)
     }
-}
+    }

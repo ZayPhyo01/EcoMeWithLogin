@@ -1,11 +1,15 @@
 package com.example.ecome.persistance
 
-import android.arch.persistence.room.*
+
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.ecome.data.vos.*
 import com.example.ecome.persistance.typeconveter.ImageTypeConveter
 
-@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class,LoginVO::class, FavouriteVO::class), version = 14)
+@Database(entities = arrayOf(CategoryVO::class, ProductVO::class,ProductImageVO::class,LoginVO::class, FavouriteVO::class), version = 17)
 @TypeConverters(ImageTypeConveter::class)
 abstract class EcoDatabase : RoomDatabase() {
 

@@ -1,6 +1,7 @@
 package com.example.ecome.data.model
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.ecome.data.vos.CategoryVO
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.CategoryResponse
@@ -10,18 +11,17 @@ object CategoryModel  : BaseModel( ), ICategory {
 
     fun getInstance() : CategoryModel = CategoryModel
 
-    override fun getCategoryList(result: ICategory.CategoryResult): MutableList<CategoryVO> {
+    override fun getCategoryList( ): LiveData<MutableList<CategoryVO>> {
 
 
         mDataAgent.loadCategory(object : BaseDelegate<CategoryResponse> {
             override fun fail(message: String) {
-                result.onError(message)
+
             }
 
             override fun success(dataVo: CategoryResponse) {
                 mEcoDatabase.getCategoryDao().insertCategory(dataVo.categoryList!!)
 
-                result.onSuccess(dataVo.categoryList)
 
 
             }
@@ -32,7 +32,7 @@ object CategoryModel  : BaseModel( ), ICategory {
     }
 
     fun isEmpty(): Boolean {
-        return mEcoDatabase.getCategoryDao().getCategory().isEmpty()
+        return false
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.ecome.mvp.presenter
 
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.example.ecome.data.model.CategoryModel
 import com.example.ecome.data.model.ICategory
 import com.example.ecome.data.model.IProduct
@@ -9,7 +11,7 @@ import com.example.ecome.data.vos.CategoryVO
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.mvp.view.HomeView
 
-class HomePresenter(val homeView: HomeView) : BasePresenter(), IHomePresenter {
+class HomePresenter( ) : BasePresenter<HomeView>(), IHomePresenter {
 
     override fun onTapUnFav(id: Int) {
         productModel.unFavouriteWithId(id)
@@ -17,7 +19,7 @@ class HomePresenter(val homeView: HomeView) : BasePresenter(), IHomePresenter {
 
     override fun onTapItem(id: Int) {
         productModel.saveProductHistoryWithId(id)
-        homeView.nevigateTo(id)
+        mView.nevigateTo(id)
 
     }
 
@@ -29,49 +31,24 @@ class HomePresenter(val homeView: HomeView) : BasePresenter(), IHomePresenter {
         productModel = ProductModel.getInstance()
     }
 
-    override fun onCreate() {
 
-    }
 
-    override fun onStart() {
-    }
-
-    override fun onStop() {
-    }
-
-    override fun onDestroy() {
-
-    }
-
-    override fun onUiReady() {
-        categoModel.getCategoryList(object : ICategory.CategoryResult {
-            override fun onSuccess(categories: MutableList<CategoryVO>) {
-                homeView.showCategoryList(categories)
-            }
-
-            override fun onError(message: String) {
+    override fun onUiReady(lifecycleOwner: LifecycleOwner) {
+        categoModel.getCategoryList().observe(lifecycleOwner,object : Observer<MutableList<CategoryVO>>{
+            override fun onChanged(t: MutableList<CategoryVO>?) {
+                 mView.showCategoryList(t!!)
             }
         })
 
-        var dataforPresesitence = productModel.getProducts(object : IProduct.ProductDelegate {
-            override fun onSuccess(products: MutableList<ProductVO>) {
-                var debug = products
-                homeView.showProductList(products)
-            }
-
-            override fun onError(message: String) {
-
-            }
-
-        })
-        if (dataforPresesitence != null) {
-            homeView.showProductList(dataforPresesitence)
-            Log.d("this line ", "work")
-        }
+      productModel.getProducts().observe(lifecycleOwner,object : Observer<MutableList<ProductVO>>{
+          override fun onChanged(t: MutableList<ProductVO>?) {
+              mView.showProductList(t!!)
+          }
+      })
     }
 
     override fun onTapFav(id: Int) {
         productModel.favouriteWithId(id)
-        Log.d("presenter", "id = $id")
+
     }
 }

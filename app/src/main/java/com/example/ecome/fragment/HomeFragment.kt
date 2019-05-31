@@ -3,12 +3,14 @@ package com.example.ecome.fragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.ecome.R
 import com.example.ecome.activity.DetailProductActivity
 import com.example.ecome.adapter.CategoryAdapter
@@ -52,16 +54,14 @@ class HomeFragment : BaseFragment(),HomeView {
         }
     }
 
-    var homePresenter : HomePresenter
-    var categoryModel: CategoryModel
+    private val homePresenter : HomePresenter = HomePresenter()
 
-    lateinit var categoryAdapter: CategoryAdapter
-    lateinit var productAdapter: ProductAdapter
+    private val categoryAdapter: CategoryAdapter = CategoryAdapter()
+    private val productAdapter: ProductAdapter
 
     init {
-        categoryModel = CategoryModel.getInstance()
-
-        homePresenter = HomePresenter(this)
+        productAdapter = ProductAdapter(homePresenter)
+        homePresenter.initView(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,15 +85,18 @@ class HomeFragment : BaseFragment(),HomeView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        categoryAdapter = CategoryAdapter(context!!)
-        productAdapter = ProductAdapter(context!!,homePresenter)
-        rv_category.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        rv_category.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
+            context,
+            androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
+            false
+        )
         rv_category.adapter = categoryAdapter
 
-        rv_product.layoutManager = GridLayoutManager(context, 2)
+        rv_product.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
         rv_product.adapter = productAdapter
 
-        homePresenter.onUiReady()
+       // homePresenter.onUiReady()
     }
 
 
@@ -103,6 +106,7 @@ class HomeFragment : BaseFragment(),HomeView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
         }
+        homePresenter.onUiReady(this)
 
 
     }
@@ -111,13 +115,13 @@ class HomeFragment : BaseFragment(),HomeView {
      * set up category with catgory data by showing on recyclerview
      * contain category adapter
      */
-    fun setUpCategory(categoryList: MutableList<CategoryVO>) {
+    private fun setUpCategory(categoryList: MutableList<CategoryVO>) {
 
         categoryAdapter.setNewData(categoryList)
 
     }
 
-    fun setUpProduct(productList: MutableList<ProductVO>) {
+    private fun setUpProduct(productList: MutableList<ProductVO>) {
 
         productAdapter.setNewData(productList)
 

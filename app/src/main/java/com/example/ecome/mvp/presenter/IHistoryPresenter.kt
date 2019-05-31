@@ -1,6 +1,8 @@
 package com.example.ecome.mvp.presenter
 
+import androidx.lifecycle.LifecycleOwner
+
 interface IHistoryPresenter {
 
-    fun onUiReady()
+    fun onUiReady(lifecycleOwner: LifecycleOwner)
 }

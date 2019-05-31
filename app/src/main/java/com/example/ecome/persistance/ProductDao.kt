@@ -1,6 +1,8 @@
 package com.example.ecome.persistance
 
-import android.arch.persistence.room.*
+
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.example.ecome.data.vos.FavouriteVO
 import com.example.ecome.data.vos.ProductImageVO
 import com.example.ecome.data.vos.ProductVO
@@ -10,44 +12,42 @@ import com.example.ecome.util.AppUtils
 abstract class ProductDao {
 
     @Query("Select * from product")
-    abstract fun getProductFormDatabase(): MutableList<ProductVO>
+    abstract fun getProductFormDatabase(): LiveData<MutableList<ProductVO>>
 
     @Query("Select * from product where product_id = :id")
-    abstract fun getProductById(id: Int): ProductVO
+    abstract fun getProductById(id: Int): LiveData<ProductVO>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertProduct(products: MutableList<ProductVO>): List<Long>
 
+    @Query("Update product set isFavourite = :fav where product_id =:id")
+    abstract fun updateFavToProduct(id:Int,fav:Boolean)
 
-    //Todo to ask ,this dao should be in the favDao or not because it query the data from product table and not from fav table
-    //Todo to ask , also should return the collection of ProductVO or need to create FavouriteVO with attribute in the ProductVO
     @Query("Select * from product inner join fav_table on   favProductId = product_id")
-    abstract fun getFavProduct(): MutableList<ProductVO>
+    abstract fun getFavProduct(): LiveData<MutableList<ProductVO>>
 
     @Query("Update product set history_count = :countItem where product_id = :id")
     abstract fun upDateProductCount(countItem: Int, id: Int)
 
     @Query("Select * from product where history_count > 0")
-    abstract fun getProuductHistory(): MutableList<ProductVO>
+    abstract fun getProuductHistory(): LiveData<MutableList<ProductVO>>
 
     @Query("Select history_count from product where product_id = :id")
     abstract fun getProductCountWithId(id: Int): Int
 
-
-    fun getProduct(favouriteDao: FavouriteDao, productDao: ProductDao): MutableList<ProductVO> {
-        var products = productDao.getProductFormDatabase()
-        var favId = favouriteDao.getFavItemId()
-        for (productWithFav in favId) {
-
-            for(product in products){
+    /*fun getProduct(favouriteDao: FavouriteDao, productDao: ProductDao): LiveData<MutableList<ProductVO>> {
+        var products = productDao.getProductFormDatabase().value
+        var favId = favouriteDao.getFavItemId().value
+        for (productWithFav in favId!!) {
+            for(product in products!!){
                if( product.product_id == productWithFav.favProductId ) {
                    product.isFavourite = true
                    break
                }
             }
             }
-        return products
-    }
+        return
+    }*/
 
     /**
      * update the product history count by quering the count of item and increse +1 and save again to base

@@ -1,25 +1,23 @@
 package com.example.ecome.data.model
 
+import androidx.lifecycle.LiveData
 import com.example.ecome.data.vos.ProductVO
 
 interface IProduct {
 
-    fun getProducts(delegate: ProductDelegate) : MutableList<ProductVO>
+    fun getProducts( ) :LiveData<MutableList<ProductVO>>
 
-    fun getProductsById(id : Int) : ProductVO
+    fun getProductsById(id : Int) : LiveData<ProductVO>
 
     fun favouriteWithId(id : Int)
 
     fun unFavouriteWithId(id : Int)
 
-    fun getFavouriteProuduct() : MutableList<ProductVO>
+    fun getFavouriteProuduct() : LiveData<MutableList<ProductVO>>
 
-    fun getProductHistory() : MutableList<ProductVO>
+    fun getProductHistory() : LiveData<MutableList<ProductVO>>
 
     fun saveProductHistoryWithId(id : Int)
 
-    interface ProductDelegate{
-        fun onSuccess(products : MutableList<ProductVO>)
-        fun onError(message : String)
-    }
+
 }
