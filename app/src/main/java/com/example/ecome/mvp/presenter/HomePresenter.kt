@@ -1,17 +1,14 @@
 package com.example.ecome.mvp.presenter
 
-import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.ecome.data.model.CategoryModel
-import com.example.ecome.data.model.ICategory
-import com.example.ecome.data.model.IProduct
 import com.example.ecome.data.model.ProductModel
 import com.example.ecome.data.vos.CategoryVO
 import com.example.ecome.data.vos.ProductVO
 import com.example.ecome.mvp.view.HomeView
 
-class HomePresenter( ) : BasePresenter<HomeView>(), IHomePresenter {
+class HomePresenter : BasePresenter<HomeView>(), IHomePresenter {
 
     override fun onTapUnFav(id: Int) {
         productModel.unFavouriteWithId(id)

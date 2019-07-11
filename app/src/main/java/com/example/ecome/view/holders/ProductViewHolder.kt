@@ -1,50 +1,32 @@
 package com.example.ecome.view.holders
 
-import android.graphics.Color
 import android.util.Log
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.RadioGroup
 import com.bumptech.glide.Glide
-import com.example.ecome.R
 import com.example.ecome.data.vos.ProductVO
-import com.example.ecome.delegate.FavDelegate
-import com.example.ecome.delegate.TapDelegate
-import com.example.ecome.mvp.presenter.HomePresenter
+import com.example.ecome.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.item_view_product.view.*
 
-class ProductViewHolder(view: View, var mHomePresenter: HomePresenter) : BaseViewHolder<ProductVO>(view) {
+class ProductViewHolder(view: View, var mHomePresenter: HomeViewModel, val tap: (Int) -> Unit) :
+    BaseViewHolder<ProductVO>(view) {
 
     lateinit var productVO: ProductVO
 
     init {
 
-        var check = itemView.ImvFavourite
+        val check = itemView.ImvFavourite
         check.setOnClickListener { t ->
             Log.d("Fav in view holder ", "${productVO.isFavourite}")
             if (productVO.isFavourite) {
-                mHomePresenter.onTapUnFav(productVO.product_id)
+                mHomePresenter.onTapUnFavourite(productVO.product_id)
             } else {
-                mHomePresenter.onTapFav(productVO.product_id)
+                mHomePresenter.onTapFavourite(productVO.product_id)
             }
         }
-        /*  check.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
-              override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-                   if(isChecked) {
-                       Log.d("view is ","check")
 
-                   }
-                       else{
-
-
-                       Log.d("view is ","uncheck")
-                       }
-                   }
-
-          })*/
 
     }
+
 
     override fun bind(bindData: ProductVO) {
         productVO = bindData
@@ -69,7 +51,8 @@ class ProductViewHolder(view: View, var mHomePresenter: HomePresenter) : BaseVie
     }
 
     override fun onClick(v: View?) {
-        var id: Int = productVO.product_id
+        val id: Int = productVO.product_id
+        tap.invoke(id)
         mHomePresenter.onTapItem(id)
         Log.d("ProductView Holder ", id.toString())
 

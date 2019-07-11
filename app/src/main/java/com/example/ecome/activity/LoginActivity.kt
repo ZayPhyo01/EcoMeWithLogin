@@ -34,7 +34,6 @@ class LoginActivity : BaseActivity(), LoginView {
 
     override fun login() {
         startActivity(MainActivity.newIntent(this))
-
     }
 
    lateinit var loginPresenter: LoginPresenter

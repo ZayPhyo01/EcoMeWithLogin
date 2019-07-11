@@ -24,7 +24,6 @@ abstract class EcoDatabase : RoomDatabase() {
         var database: EcoDatabase? = null
 
         fun getInstance(context: Context): EcoDatabase {
-
             if (database == null) {
                 database = Room.databaseBuilder(context, EcoDatabase::class.java, DATABASE_NAME)
                     .allowMainThreadQueries()

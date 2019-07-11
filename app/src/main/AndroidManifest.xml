@@ -7,7 +7,8 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:usesCleartextTraffic="true"
+            android:icon="@drawable/shop"
             android:label="@string/app_name"
             android:name=".EcoApp"
             android:roundIcon="@mipmap/ic_launcher_round"

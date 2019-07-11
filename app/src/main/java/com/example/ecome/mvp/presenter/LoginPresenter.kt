@@ -22,7 +22,6 @@ class LoginPresenter() : BasePresenter<LoginView>(),ILoginPresenter {
             }
 
             override fun onSuccess(loginVO: LoginVO) {
-
                 mView.login()
                 mView.hideProgress()
             }

@@ -1,5 +1,6 @@
 package com.example.ecome.data.model
 
+import android.util.Log
 import com.example.ecome.data.vos.LoginVO
 import com.example.ecome.delegate.BaseDelegate
 import com.example.ecome.network.response.LoginResponse
@@ -18,6 +19,7 @@ object UserModel : BaseModel(), ILogin {
     override fun login(phone: String, pw: String, loginDelegate: ILogin.LoginDelegate) {
         mDataAgent.login(phone, pw, object : BaseDelegate<LoginResponse> {
             override fun fail(message: String) {
+                Log.d("Login in dataagent ",message)
                 loginDelegate.onFail("fail login")
             }
 

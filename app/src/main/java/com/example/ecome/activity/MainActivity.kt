@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.viewpager.widget.ViewPager
 import com.example.ecome.R
 import com.example.ecome.adapter.HomePagerAdapter
 import com.example.ecome.data.model.UserModel
+import com.example.ecome.fragment.HomeFragment
+import com.example.ecome.fragment.ProfileFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
+
 
     val userModel: UserModel
     var keep: Boolean = false
@@ -22,7 +26,7 @@ class MainActivity : BaseActivity() {
     companion object {
 
         fun newIntent(context: Context): Intent {
-            var intent = Intent(context, MainActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
             return intent
 
         }
@@ -39,6 +43,8 @@ class MainActivity : BaseActivity() {
 
 
         vp_home.adapter = HomePagerAdapter(supportFragmentManager)
+
+
         tabHome.setupWithViewPager(vp_home)
         tabHome.getTabAt(0)!!.icon = resources.getDrawable(R.drawable.ic_home_black_24dp)
         tabHome.getTabAt(1)!!.icon = resources.getDrawable(R.drawable.ic_person_black_24dp)

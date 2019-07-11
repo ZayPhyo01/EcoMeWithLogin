@@ -1,51 +1,27 @@
 package com.example.ecome.fragment
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.ecome.R
 import com.example.ecome.activity.DetailProductActivity
 import com.example.ecome.adapter.CategoryAdapter
 import com.example.ecome.adapter.ProductAdapter
-import com.example.ecome.data.model.CategoryModel
-import com.example.ecome.data.model.ICategory
-import com.example.ecome.data.model.IProduct
-import com.example.ecome.data.model.ProductModel
 import com.example.ecome.data.vos.CategoryVO
-import com.example.ecome.data.vos.FavouriteVO
 import com.example.ecome.data.vos.ProductVO
-import com.example.ecome.delegate.FavDelegate
-import com.example.ecome.delegate.TapDelegate
-import com.example.ecome.mvp.presenter.HomePresenter
-import com.example.ecome.mvp.presenter.IHomePresenter
-import com.example.ecome.mvp.view.HomeView
 import com.example.ecome.util.AppUtils
+import com.example.ecome.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment(),HomeView {
+class HomeFragment : BaseFragment()  {
+     var homeViewModel : HomeViewModel = HomeViewModel()
 
-    override fun nevigateTo(id : Int) {
-        var intent: Intent = DetailProductActivity.newIntent(context!!)
-        intent.putExtra(AppUtils.PRODUCT_ID, id)
-        context!!.startActivity(intent)
-    }
-
-    override fun showCategoryList(categoryList: MutableList<CategoryVO>) {
-        setUpCategory(categoryList)
-    }
-
-    override fun showProductList(productList: MutableList<ProductVO>) {
-        var productListDebug = productList
-        setUpProduct(productList)
-    }
 
 
     companion object {
@@ -54,36 +30,34 @@ class HomeFragment : BaseFragment(),HomeView {
         }
     }
 
-    private val homePresenter : HomePresenter = HomePresenter()
 
     private val categoryAdapter: CategoryAdapter = CategoryAdapter()
     private val productAdapter: ProductAdapter
 
     init {
-        productAdapter = ProductAdapter(homePresenter)
-        homePresenter.initView(this)
+        productAdapter = ProductAdapter(homeViewModel,{
+            val intent = DetailProductActivity.newIntent(context!!)
+            intent.putExtra(AppUtils.PRODUCT_ID,it)
+            context!!.startActivity(intent)
+
+        })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
-
-
- /*   override fun onTap(productId: Int) {
-        productModel.saveProductHistoryWithId(productId)
-        var intent: Intent = DetailProductActivity.newIntent(context!!)
-        intent.putExtra(AppUtils.PRODUCT_ID, productId)
-        context!!.startActivity(intent)
-    }*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
 
 
         rv_category.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
@@ -96,7 +70,7 @@ class HomeFragment : BaseFragment(),HomeView {
         rv_product.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 2)
         rv_product.adapter = productAdapter
 
-       // homePresenter.onUiReady()
+       // homeViewModel.onUiReady()
     }
 
 
@@ -106,8 +80,18 @@ class HomeFragment : BaseFragment(),HomeView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
         }
-        homePresenter.onUiReady(this)
+        homeViewModel.getCategories().observe(this,object : Observer<MutableList<CategoryVO>>{
+            override fun onChanged(t: MutableList<CategoryVO>?) {
+                 setUpCategory(t!!)
+            }
+        })
+        homeViewModel.getProducts().observe(this,object : Observer<MutableList<ProductVO>>{
+            override fun onChanged(t: MutableList<ProductVO>?) {
+                Log.d("Product data ","change")
+                 setUpProduct(t!!)
+            }
 
+        })
 
     }
 
@@ -124,7 +108,6 @@ class HomeFragment : BaseFragment(),HomeView {
     private fun setUpProduct(productList: MutableList<ProductVO>) {
 
         productAdapter.setNewData(productList)
-
 
     }
 }
