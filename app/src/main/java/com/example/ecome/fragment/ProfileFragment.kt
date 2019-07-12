@@ -42,7 +42,7 @@ class ProfileFragment : BaseFragment() {
         productAdapter.setNewData(products)
     }
 
-    val historyPresenter: HistoryViewModel
+   lateinit var  historyPresenter: HistoryViewModel
     val productAdapter: HistoryAdapter
 
     companion object {
@@ -54,8 +54,6 @@ class ProfileFragment : BaseFragment() {
 
 
     init {
-
-        historyPresenter = HistoryViewModel()
         productAdapter = HistoryAdapter()
 
     }
@@ -66,6 +64,7 @@ class ProfileFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        historyPresenter = ViewModelProviders.of(activity!!).get(HistoryViewModel::class.java)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.whiteStatusBarColor));

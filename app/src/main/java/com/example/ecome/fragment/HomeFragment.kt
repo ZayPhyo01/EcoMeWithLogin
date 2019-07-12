@@ -20,7 +20,7 @@ import com.example.ecome.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : BaseFragment()  {
-     var homeViewModel : HomeViewModel = HomeViewModel()
+     lateinit var homeViewModel : HomeViewModel
 
 
 
@@ -32,20 +32,36 @@ class HomeFragment : BaseFragment()  {
 
 
     private val categoryAdapter: CategoryAdapter = CategoryAdapter()
-    private val productAdapter: ProductAdapter
+   lateinit var  productAdapter: ProductAdapter
 
-    init {
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        homeViewModel = ViewModelProviders.of(activity!!).get(HomeViewModel::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
+        }
+        homeViewModel.getCategories().observe(this,object : Observer<MutableList<CategoryVO>>{
+            override fun onChanged(t: MutableList<CategoryVO>?) {
+                setUpCategory(t!!)
+            }
+        })
+        homeViewModel.getProducts().observe(this,object : Observer<MutableList<ProductVO>>{
+            override fun onChanged(t: MutableList<ProductVO>?) {
+                Log.d("Product data ","change")
+                setUpProduct(t!!)
+            }
+
+        })
         productAdapter = ProductAdapter(homeViewModel,{
             val intent = DetailProductActivity.newIntent(context!!)
             intent.putExtra(AppUtils.PRODUCT_ID,it)
             context!!.startActivity(intent)
 
         })
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
     }
 
@@ -57,9 +73,6 @@ class HomeFragment : BaseFragment()  {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
-
         rv_category.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
             context,
             androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,
@@ -75,25 +88,7 @@ class HomeFragment : BaseFragment()  {
 
 
 
-    override fun onStart() {
-        super.onStart()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            activity!!.getWindow().setStatusBarColor(ContextCompat.getColor(context!!, R.color.appBarstatusColor));
-        }
-        homeViewModel.getCategories().observe(this,object : Observer<MutableList<CategoryVO>>{
-            override fun onChanged(t: MutableList<CategoryVO>?) {
-                 setUpCategory(t!!)
-            }
-        })
-        homeViewModel.getProducts().observe(this,object : Observer<MutableList<ProductVO>>{
-            override fun onChanged(t: MutableList<ProductVO>?) {
-                Log.d("Product data ","change")
-                 setUpProduct(t!!)
-            }
 
-        })
-
-    }
 
     /**
      * set up category with catgory data by showing on recyclerview
